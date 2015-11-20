@@ -27,6 +27,7 @@ var universalTimer,
     scoreText,
     topScore = 0,
     score = 0,
+    playerInPosition = false,
     arr = [700, 1200, 2000],
     soundArray = [],
     stageMusic,
@@ -156,13 +157,13 @@ Game.MainState.prototype = {
    
 	update() {
         this.checkIfPlayerOnTop();
-
+        
+        this.playerAppear();
         this.paralax();
         grass.tilePosition.x -= grassSpeed;
         ranNum = rdg.pick(arr);
         ranItemPlace = rdg.pick(itemPlace);
         
-        universalTimer.add(1500, this.playerAppear, this);
         this.setBodySize();
         this.playerJump();
         var ranSnd = rdg.pick(soundArray);
@@ -189,7 +190,8 @@ Game.MainState.prototype = {
         }, this);  
     },
     startObstacleAndItemTimer: function() {
-        if (space.enabled) {
+        if (playerInPosition) {
+            
              if (universalTimer.ms > obstacleTime) {
                 obstacleTime = universalTimer.ms + ranNum + 100;
                 this.addObstacle();
@@ -215,18 +217,17 @@ Game.MainState.prototype = {
         
         var coll = game.physics.arcade.collide(player, obstacles);
         if (player.body.touching.down && coll) {
-                player.body.velocity.x = -speed;
-            } else {
-                player.body.velocity.x = 0;
-            } 
+            player.x = -100;    
+        }
     },
     playerAppear: function() {
-         if (player.x >= -275 && player.x < -100 && !space.enabled) {
+         if (player.x >= -275 && player.x < -100 && !playerInPosition) {
             player.x += 1;
             } else if (player.x >= -100) {
                 space.enabled = true;
-                player.x = -100;  
-         }
+                player.x = -100; 
+                playerInPosition = true; 
+            }
     },
     playRandomSound: function(snd) {
         if (space.isDown && player.body.touching.down) {
@@ -359,7 +360,7 @@ Game.MainState.prototype = {
         }
     },
     gameOver: function() {
-      if (space.enabled && (player.x < -110 || game.physics.arcade.overlap(player, obstacles)) ) {
+      if (playerInPosition && (player.x < -110 || game.physics.arcade.overlap(player, obstacles)) ) {
           player.animations.stop();
           player.kill();
           speed = 0;
@@ -409,6 +410,7 @@ Game.MainState.prototype = {
         cityFrontSpeed = 0.030;
         obstacleTime = -1;
         itemTimer = -1;
+        playerInPosition = false;
         universalTimer.destroy();
         universalTimer = game.time.create(false);
     }
