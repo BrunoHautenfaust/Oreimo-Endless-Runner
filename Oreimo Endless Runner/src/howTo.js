@@ -1,0 +1,41 @@
+Game.HowTo = function(game) { };
+
+Game.HowTo.prototype = {
+    count : 0,
+    create: function() { 
+        space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        
+        dot = game.add.tileSprite(0, 0, game.width, game.height, 'dot');
+        var style = { font: "Bold 26px Arial", fill: "#3c3", align: "center", stroke: '#000', strokeThickness: 5};
+       
+        item = game.add.sprite(15,55,'item');
+        item.scale.setTo(1.2,1.2);
+        obstacle = game.add.sprite(70,180,'obstacle');
+        obstacle.scale.setTo(0.4,0.4);
+        spaceButton = game.add.sprite(350, 265, 'spaceButton');
+        spaceButton.scale.setTo(0.6, 0.6);
+        
+        text = game.add.text(20, 20,
+        'Your goal is to collect as many\n     (eroge and anime DVDs) as you can.\n\nBut you also have to evade all \n(obstacles) in your way.\n\nJump over them with                ', style);
+       
+        spaceText = game.add.text(370,262, 'space');
+       
+        backText = game.add.text(game.width/2, game.height -50, 'Back');
+        backText.cssFont  = "bold 50px Forte";
+        backText.anchor.setTo(0.5, 0.5);
+        backText.fill = "#093";
+        backText.stroke = "#FFF";
+        backText.strokeThickness = 5;
+        backText.setShadow(0, 3, "#333333", 2, true, false);
+
+        space.onDown.add(this.goBack, this); 
+    }, 
+    update: function() { 
+        count = 5;    
+        dot.tilePosition.y -= Math.cos(count);
+        dot.tilePosition.x -= Math.cos(count);
+    },
+    goBack() {
+        game.state.start('MainMenu');
+    }
+};
