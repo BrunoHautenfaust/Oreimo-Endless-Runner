@@ -11,6 +11,13 @@
 <img src="./screenshots/screen1.jpg" alt="screen1" width="400" height="300">
 <img src="./screenshots/screen2.jpg" alt="screen2" width="400" height="300">
 
+#### Browser Performance:
+- _Google Chrome 46.0:_ Runs fine!
+- _Mozilla Firefox 42.0:_ Runs a bit laggy.
+- _Opera 33.0:_ Runs fine!
+- _Microsoft Edge:_ No sound. Game doesn't go beyond the main menu. 
+- _Internet Explorer 11:_ No sound. Doesn't go beyond the loading screen.
+
 #### Resources:
 (This game wouldn't have had the right feeling to it without them)
 - Kirino sprites: http://www.justnopoint.com/lbends/
