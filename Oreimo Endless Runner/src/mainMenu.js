@@ -52,7 +52,11 @@ Game.MainMenu.prototype = {
         
         playText.inputEnabled = true;
         instructionsText.inputEnabled = true;
-        playText.events.onInputDown.add(function(){game.state.start('PlayGame');}, this);
+        playText.events.onInputDown.add(function(){
+            game.state.start('PlayGame');
+            Game.music.stop();
+            black.alpha = 1;
+        }, this);
         instructionsText.events.onInputDown.add(function(){ game.state.start('HowTo');}, this);
     }, 
     update: function() { 
