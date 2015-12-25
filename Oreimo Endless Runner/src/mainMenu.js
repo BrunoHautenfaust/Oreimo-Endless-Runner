@@ -49,12 +49,22 @@ Game.MainMenu.prototype = {
         black = game.add.sprite(0,0, 'black');
         black.scale.setTo(game.width, game.height);
         black.alpha = 0;
+        
+        playText.inputEnabled = true;
+        instructionsText.inputEnabled = true;
+        playText.events.onInputDown.add(function(){game.state.start('PlayGame');}, this);
+        instructionsText.events.onInputDown.add(function(){ game.state.start('HowTo');}, this);
     }, 
     update: function() { 
-       
         count = 5;
         dot.tilePosition.y -= Math.cos(count);
         dot.tilePosition.x -= Math.cos(count);
+        
+        if (playText.input.pointerOver()) {
+            this.playTextActive();
+        } else if (instructionsText.input.pointerOver()) {
+            this.instructionsTextActive();
+        }
         
         if (space.isDown && playText.fill == activeFill) {
             Game.music.fadeOut(400);

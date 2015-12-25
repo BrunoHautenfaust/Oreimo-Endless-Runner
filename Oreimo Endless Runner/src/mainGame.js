@@ -96,7 +96,8 @@ Game.MainState.prototype = {
         player.body.gravity.y = 1500;
         
         space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        space.enabled = false;
+        pointer = game.input.activePointer;
+        game.input.enabled = false;
 
         topScore = localStorage.getItem("HighScore") == null ? 0 : localStorage.getItem("HighScore");
 
@@ -124,18 +125,23 @@ Game.MainState.prototype = {
        rectangle = game.make.sprite(0,0,'rectangle');
        rectangle = game.add.sprite(game.world.centerX - rectangle.width/2, game.world.centerY - rectangle.height/2,'rectangle');
         
-         var style2 = { fontSize: '22px', fill: '#093' }
+        var style2 = { fontSize: '22px', fill: '#093' }
         topScoreTextInRect = game.add.text(game.world.centerX - rectangle.width/2 + 10, game.world.centerY - rectangle.height/2 + 6,'top score: 0', style2);
         scoreTextInRect = game.add.text(game.world.centerX - rectangle.width/2 + 10, game.world.centerY - rectangle.height/2 + 30, 'score: 0', style2);
-        playText = game.add.text(game.world.centerX - rectangle.width/2 + 30, game.world.centerY - rectangle.height/2 + 55, 'Play again', {fill: '#093'});
-        playText.stroke = "#FFF";
-        playText.strokeThickness = 5;
-        playText.setShadow(0, 3, "#333333", 2, true, false);
+        playAgainText = game.add.text(game.world.centerX - rectangle.width/2 + 30, game.world.centerY - rectangle.height/2 + 55, 'Play again', {fill: '#093'});
+        playAgainText.stroke = "#FFF";
+        playAgainText.strokeThickness = 5;
+        playAgainText.setShadow(0, 3, "#333333", 2, true, false);
         
         rectangle.alpha = 0;
         topScoreTextInRect.alpha = 0;
         scoreTextInRect.alpha = 0;
-        playText.alpha = 0;
+        playAgainText.alpha = 0;
+        playAgainText.inputEnabled = true;
+        playAgainText.events.onInputDown.add(function(){
+                this._setDefaults();
+                game.state.start(game.state.current);
+            }, this);
         
         universalTimer = game.time.create(false);
         universalTimer.start();
@@ -224,21 +230,21 @@ Game.MainState.prototype = {
          if (player.x >= -275 && player.x < -100 && !playerInPosition) {
             player.x += 1;
             } else if (player.x >= -100) {
-                space.enabled = true;
+                game.input.enabled = true;
                 player.x = -100; 
                 playerInPosition = true; 
             }
     },
     playRandomSound: function(snd) {
-        if (space.isDown && player.body.touching.down) {
+        if ((space.isDown || pointer.isDown) && player.body.touching.down) {
             snd.play();    
         }
     },
     playerJump: function() {
-        if (space.isDown && player.body.touching.down) {
+        if ((space.isDown || pointer.isDown) && player.body.touching.down) {
             jumptimer = 1;
             player.body.velocity.y = -300;
-        } else if (space.isDown && (jumptimer != 0)) {
+        } else if ((space.isDown || pointer.isDown) && (jumptimer != 0)) {
                             if (flag >= 0 && flag <= 10) {
                                 player.animations.play('goUp', 15, true);
                                 flag += 1;
@@ -252,7 +258,7 @@ Game.MainState.prototype = {
                 jumptimer += 1;
                 player.body.velocity.y = -300;
                }
-        } else if (space.isUp && jumptimer != 0) {
+        } else if ((space.isUp || pointer.isUp) && jumptimer != 0) {
              jumptimer = 0;
 
         } else if (jumptimer == 0 && !player.body.touching.down) {
@@ -381,11 +387,11 @@ Game.MainState.prototype = {
         }  
     },
     _showScoreScreen: function() {
-        if (rectangle.alpha != 1 && scoreTextInRect.alpha != 1 && topScoreTextInRect.alpha != 1 && playText.alpha != 1) {
+        if (rectangle.alpha != 1 && scoreTextInRect.alpha != 1 && topScoreTextInRect.alpha != 1 && playAgainText.alpha != 1) {
             rectangle.alpha = 1;
             topScoreTextInRect.alpha = 1;
             scoreTextInRect.alpha = 1;
-            playText.alpha = 1;
+            playAgainText.alpha = 1;
 
             localStorage.setItem("HighScore",Math.max(score, topScore));
             if (score > topScore) {

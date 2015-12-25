@@ -15,7 +15,9 @@ Game.Preload.prototype = {
         // How to
         this.load.image('obstacle', 'assets/textures/crate.png');
         this.load.image('item', 'assets/textures/item.png');
-        this.load.image('spaceButton', 'assets/textures/spaceButton.png');
+        this.load.image('space', 'assets/textures/space.png');
+        this.load.image('mouse', 'assets/textures/mouse.png');
+        this.load.image('tap', 'assets/textures/tap.png');
         
         // Main Game
         game.load.image('sky', 'assets/textures/sky.jpg');
