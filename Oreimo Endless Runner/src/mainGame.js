@@ -34,7 +34,7 @@ var universalTimer,
     itemTimer = -1,
     itemPlace = [150, 300, 200],
     itemFlag,
-    ranItemPlace,
+    ranItemPlace;
 
 Game.MainState.prototype = {
   
