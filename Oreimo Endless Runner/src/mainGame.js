@@ -97,7 +97,7 @@ Game.MainState.prototype = {
         
         space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         pointer = game.input.activePointer;
-        space.enabled = false;
+        game.input.enabled = false;
 
         topScore = localStorage.getItem("HighScore") == null ? 0 : localStorage.getItem("HighScore");
 
@@ -226,7 +226,7 @@ Game.MainState.prototype = {
          if (player.x >= -275 && player.x < -100 && !playerInPosition) {
             player.x += 1;
             } else if (player.x >= -100) {
-                space.enabled = true;
+                game.input.enabled = true;
                 player.x = -100; 
                 playerInPosition = true; 
             }
