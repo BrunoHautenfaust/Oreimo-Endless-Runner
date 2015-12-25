@@ -34,7 +34,7 @@ var universalTimer,
     itemTimer = -1,
     itemPlace = [150, 300, 200],
     itemFlag,
-    ranItemPlace;
+    ranItemPlace,
 
 Game.MainState.prototype = {
   
@@ -97,7 +97,7 @@ Game.MainState.prototype = {
         
         space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         pointer = game.input.activePointer;
-        game.input.enabled = false;
+        space.enabled = false;
 
         topScore = localStorage.getItem("HighScore") == null ? 0 : localStorage.getItem("HighScore");
 
@@ -137,11 +137,7 @@ Game.MainState.prototype = {
         topScoreTextInRect.alpha = 0;
         scoreTextInRect.alpha = 0;
         playAgainText.alpha = 0;
-        playAgainText.inputEnabled = true;
-        playAgainText.events.onInputDown.add(function(){
-                this._setDefaults();
-                game.state.start(game.state.current);
-            }, this);
+        
         
         universalTimer = game.time.create(false);
         universalTimer.start();
@@ -163,7 +159,7 @@ Game.MainState.prototype = {
    
 	update() {
         this.checkIfPlayerOnTop();
-        
+
         this.playerAppear();
         this.paralax();
         grass.tilePosition.x -= grassSpeed;
@@ -230,13 +226,13 @@ Game.MainState.prototype = {
          if (player.x >= -275 && player.x < -100 && !playerInPosition) {
             player.x += 1;
             } else if (player.x >= -100) {
-                game.input.enabled = true;
+                space.enabled = true;
                 player.x = -100; 
                 playerInPosition = true; 
             }
     },
     playRandomSound: function(snd) {
-        if ((space.isDown || pointer.isDown) && player.body.touching.down) {
+        if ((space.isDown || pointer.isDown) && player.body.touching.down && player.alive) {
             snd.play();    
         }
     },
@@ -392,7 +388,13 @@ Game.MainState.prototype = {
             topScoreTextInRect.alpha = 1;
             scoreTextInRect.alpha = 1;
             playAgainText.alpha = 1;
-
+            
+            playAgainText.inputEnabled = true;
+            playAgainText.events.onInputDown.add(function(){
+                this._setDefaults();
+                game.state.start(game.state.current);
+            }, this);
+            
             localStorage.setItem("HighScore",Math.max(score, topScore));
             if (score > topScore) {
                 topScoreTextInRect.text = 'top score: ' + score;
@@ -403,6 +405,7 @@ Game.MainState.prototype = {
                 this._setDefaults();
                 game.state.start(game.state.current);
             }, this);
+            
         }
     },
     _setDefaults: function() {
@@ -419,5 +422,6 @@ Game.MainState.prototype = {
         playerInPosition = false;
         universalTimer.destroy();
         universalTimer = game.time.create(false);
+        playAgainText.inputEnabled = false;
     }
 };
