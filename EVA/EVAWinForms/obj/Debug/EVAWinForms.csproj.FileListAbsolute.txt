@@ -1,0 +1,9 @@
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\obj\Debug\EVAWinForms.Properties.Resources.resources
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\obj\Debug\EVAWinForms.csproj.GenerateResource.Cache
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\bin\Debug\EVA.exe.config
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\bin\Debug\EVA.exe
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\bin\Debug\EVA.pdb
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\obj\Debug\EVA.exe
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\obj\Debug\EVA.pdb
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\obj\Debug\EVAWinForms.MainForm.resources
+D:\`Programs\VS PROJECTS\EVAWinForms\EVAWinForms\obj\Debug\EVAWinForms.AboutUserControl.resources
