@@ -28,18 +28,24 @@ var universalTimer,
     topScore = 0,
     score = 0,
     playerInPosition = false,
-    arr = [700, 1200, 2000],
+    numArr = [700, 1200, 2000],
     soundArray = [],
     stageMusic,
     itemTimer = -1,
     itemPlace = [150, 300, 200],
     itemFlag,
-    ranItemPlace;
+    ranItemPlace,
+    isDay = false,
+    tint = 0xffbf99,
+    gameOver = false,
+    gameOverCounter = 0;
 
 Game.MainState.prototype = {
   
 	create() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
+       
+       
        
         sky = game.make.sprite(0,0, 'sky');
         cityBack = game.make.sprite(0,0, 'cityBack');
@@ -49,13 +55,10 @@ Game.MainState.prototype = {
         obstacleSprite = game.make.sprite(0, 0, 'obstacle');
         grass = game.make.sprite(0, 0, 'grass');
         item = game.make.sprite(0, 0, 'item'); 
-
-        
+      
         sky = game.add.sprite(0,0,'sky');
         mountain = game.add.sprite(game.world.width/2 - 120, game.height/2 - 30, 'mountain');
-        sun = game.add.sprite(game.width - 50, 100,'sun');
-        sun.scale.setTo(0.4,0.4);
-        sun.anchor.setTo(0.5, 0.5);
+
         cloudsTop = game.add.sprite(game.world.width/2 + 60, game.world.height/2 - 5, 'cloudsTop');
         cloudsBottom = game.add.sprite(game.world.width/2 + 10, game.world.height/2 + 5, 'cloudsBottom');
         smallMountains = game.add.sprite(0, game.world.height/2 + 5, 'smallMountains');
@@ -67,6 +70,16 @@ Game.MainState.prototype = {
         filter.scale.setTo(game.width, game.height);
         filter.alpha = 0.15;
         
+        // plane
+        /*
+        a = 1;
+        point = game.make.sprite(0, 0, 'point');
+        texture = game.add.renderTexture(512, 400, 'planetrail');
+        */
+        //graphics.beginFill(0xFFFFFF, 1);
+        //graphics.drawCircle(-5, -5, 2); // draws a circle in the given coordinates
+        //game.add.sprite(-10, 150, texture); // starts the trailing from the given coordinates
+
         platforms = game.add.group();
         platforms.enableBody = true;
         
@@ -81,8 +94,7 @@ Game.MainState.prototype = {
         items.createMultiple(10, 'item');
 
         itemSound = game.add.audio('itemSound');
-        
-        
+         
         obstacles = game.add.group();
         obstacles.enableBody = true;
         obstacles.createMultiple(10, 'obstacle');
@@ -123,20 +135,48 @@ Game.MainState.prototype = {
        stageMusic.play();
         
        rectangle = game.make.sprite(0,0,'rectangle');
-       rectangle = game.add.sprite(game.world.centerX - rectangle.width/2, game.world.centerY - rectangle.height/2,'rectangle');
-        
+       rectangle = game.add.sprite(game.world.centerX - rectangle.width/2, game.world.centerY - rectangle.height + 20,'rectangle');
+        rectangle.scale.y = 1.5;
+       // rectangle.anchor.setTo(0.5, 0.5);
         var style2 = { fontSize: '22px', fill: '#093' }
         topScoreTextInRect = game.add.text(game.world.centerX - rectangle.width/2 + 10, game.world.centerY - rectangle.height/2 + 6,'top score: 0', style2);
         scoreTextInRect = game.add.text(game.world.centerX - rectangle.width/2 + 10, game.world.centerY - rectangle.height/2 + 30, 'score: 0', style2);
-        playAgainText = game.add.text(game.world.centerX - rectangle.width/2 + 30, game.world.centerY - rectangle.height/2 + 55, 'Play again', {fill: '#093'});
-        playAgainText.stroke = "#FFF";
-        playAgainText.strokeThickness = 5;
-        playAgainText.setShadow(0, 3, "#333333", 2, true, false);
         
+        playAgainText = game.add.text(game.world.centerX - rectangle.width/2 + 32, game.world.centerY - rectangle.height/2 + 60, 'Play again', {fill: '#093', stroke: '#FFF', strokeThickness: 5});
+       
+        mainMenuText = game.add.text(game.world.centerX - rectangle.width/2 + 30, game.world.centerY - rectangle.height/2 + 100, 'Main Menu', {fill: '#093', stroke: '#FFF', strokeThickness: 5});
+
         rectangle.alpha = 0;
         topScoreTextInRect.alpha = 0;
         scoreTextInRect.alpha = 0;
         playAgainText.alpha = 0;
+        mainMenuText.alpha = 0;
+        
+       var cloudTint = 0xa998a0;
+          // new
+         if (!isDay) {
+            sky.tint = 0xeeb8b5;
+            mountain.tint = 0xeeb8b5;
+            cloudsTop.tint = cloudTint;
+            cloudsBottom.tint = cloudTint;
+            smallMountains.tint = tint;
+            //point.tint = tint;
+            cityBack.tint = tint;
+            cityMid.tint = tint;
+            cityFront.tint = tint;
+            grass.tint = tint;
+            player.tint = tint;
+            filter.tint = 0xfdafe0;
+            /*
+            sun = game.add.sprite(game.width - 40, game.height - 160,'sun');
+            sun.scale.setTo(0.4,0.4);
+            sun.anchor.setTo(0.5, 0.5);
+            */
+        } else {
+            sun = game.add.sprite(game.width - 50, 100,'sun');
+            sun.scale.setTo(0.4,0.4);
+            sun.anchor.setTo(0.5, 0.5);
+        }
         
         
         universalTimer = game.time.create(false);
@@ -150,59 +190,80 @@ Game.MainState.prototype = {
         }, this);
         
         game.onFocus.add(function(){
+           // if (!gameOver) {    // I think this fixes kill items/obs reoccur after game over
             universalTimer.resume();
             game.paused = false;
             game.sound.resumeAll();
             black.alpha = 0;
+           //     }
         }, this);
+        
+      
     },
    
 	update() {
-        this.checkIfPlayerOnTop();
+       var inputName = $('#input');
+        ShowHideInput(inputName);
+       // texture.renderXY(point, a+=0.05, 0);
+        
+        if (!gameOver) {
+            this.checkIfPlayerOnTop();
+            
+            this.playerAppear();
+            this.paralax();
+            grass.tilePosition.x -= grassSpeed;
+            ranNum = rdg.pick(numArr);
+            ranItemPlace = rdg.pick(itemPlace);
+            
+            
+            this.setBodySize();
+            this.playerJump();
+            var ranSnd = rdg.pick(soundArray);
+            this.playRandomSound(ranSnd);
 
-        this.playerAppear();
-        this.paralax();
-        grass.tilePosition.x -= grassSpeed;
-        ranNum = rdg.pick(arr);
-        ranItemPlace = rdg.pick(itemPlace);
+            this.startObstacleAndItemTimer();
+            this.updateSpeedForAliveElements();
+            this.raiseDifficulty();
+
+            this.checkObstacleItemOverlap();
+            this.itemTaken();
+            
+            this.gameOver();
+        } else {
+            this.CheckOption();
+            console.log('checking option');
+        }
         
-        this.setBodySize();
-        this.playerJump();
-        var ranSnd = rdg.pick(soundArray);
-        this.playRandomSound(ranSnd);
-        
-        this.startObstacleAndItemTimer();
-        this.checkObstacleItemOverlap();
-        this.itemTaken();
-        this.raiseDifficulty();
-        this.updateSpeedForAliveElements();
-     
-        this.gameOver();
 	},
     render() {
         //game.debug.body(player);
     },
-    updateSpeedForAliveElements: function() {
-      obstacles.forEachAlive(function(o){
-            o.body.velocity.x = speed;
-        }, this);
-        
-        items.forEachAlive(function(i) {
-            i.body.velocity.x = speed;
-        }, this);  
+    updateSpeedForAliveElements: function() {   // !
+            console.log('updateSpeedForAliveElements running');
+          obstacles.forEachAlive(function(o){
+                o.body.velocity.x = speed;
+            }, this);
+
+            items.forEachAlive(function(i) {
+                i.body.velocity.x = speed;
+            }, this);  
     },
-    startObstacleAndItemTimer: function() {
-        if (playerInPosition) {
-            
-             if (universalTimer.ms > obstacleTime) {
-                obstacleTime = universalTimer.ms + ranNum + 100;
-                this.addObstacle();
+    startObstacleAndItemTimer: function() { // !
+            if (playerInPosition) {
+
+                 if (universalTimer.ms > obstacleTime) {
+                    obstacleTime = universalTimer.ms + ranNum + 100;
+                    this.addObstacle();
+                 }
+                 if (universalTimer.ms > itemTimer) {
+                    itemTimer = universalTimer.ms + ranNum;
+                    universalTimer.loop(itemTimer, this.addItem, this);
+                 }
              }
-             if (universalTimer.ms > itemTimer) {
-                itemTimer = universalTimer.ms + ranNum;
-                universalTimer.loop(itemTimer, this.addItem, this);
-             }
-         }
+        // code ensures that no more obstacles/items will be added:
+       
+          //   universalTimer.destroy();
+          //   console.log('dead');
     },
     run: function(s) {
         player.animations.play('run', s, true); 
@@ -267,30 +328,41 @@ Game.MainState.prototype = {
             flag = 0;
         }
     },
-    addObstacle: function() {
-        var obs = obstacles.getFirstDead();
-        if (obs) {
-            obs.reset(game.world.width, game.world.height-obstacleSprite.height);
-            obs.width = 70;
-            obs.height = 70;
-            obs.body.velocity.x = speed;
-            obs.body.immovable = true;
-            obs.isInFront = true;
-        }
-         obs.checkWorldBounds = true;
-         obs.outOfBoundsKill = true;
+    addObstacle: function() {   // ! but maybe fix the pause timer thing
+            console.log('adding obs');
+            var obs = obstacles.getFirstDead();
+            if (obs) {
+                if (!isDay) {
+                    obs.tint = tint;            
+                }
+                obs.reset(game.world.width, game.world.height-obstacleSprite.height);
+                obs.width = 70;
+                obs.height = 70;
+                obs.body.velocity.x = speed;
+                obs.body.immovable = true;
+                obs.isInFront = true;
+            }
+             obs.checkWorldBounds = true;
+             obs.outOfBoundsKill = true;
     },
-    addItem: function() {
-        var itm = items.getFirstDead(); 
-        game.physics.arcade.enable(itm);
-         if (itm) {
-            itm.reset(game.world.width, ranItemPlace);
-            itm.body.velocity.x = speed;
-            itm.itemFlag = true;
-            this.addBounceEffect(itm);
-         }
-        itm.checkWorldBounds = true;
-        itm.outOfBoundsKill = true;
+    addItem: function() {   // ! but maybe fix the pause timer thing
+        if (!gameOver) {
+            console.log('adding itm');
+            var itm = items.getFirstDead(); 
+
+            game.physics.arcade.enable(itm);
+             if (itm) {
+                 if (!isDay) {
+                     itm.tint = tint;
+                 }
+                itm.reset(game.world.width, ranItemPlace);
+                itm.body.velocity.x = speed;
+                itm.itemFlag = true;
+                this.addBounceEffect(itm);
+             }
+            itm.checkWorldBounds = true;
+            itm.outOfBoundsKill = true;
+        }
     },
     itemTaken: function() {
         game.physics.arcade.overlap(player, items, this._updateScore, null, this);
@@ -311,6 +383,7 @@ Game.MainState.prototype = {
         bounce.yoyo(true);
     },
     checkObstacleItemOverlap: function() {
+        console.log('checking overlap');
         game.physics.arcade.overlap(obstacles, items, function(o, i){
             i.kill();
         }, null, this);
@@ -328,37 +401,37 @@ Game.MainState.prototype = {
             cloudsBottom.reset(sky.width - 10, game.world.height/2 + 50);
         }
     },
-    raiseDifficulty: function(){
-        if(score >= 0 && score < 10) {
-            anmSpeed = 11;
-            speed = -225;
-            grassSpeed = 3.75;
-        } else if(score >= 10 && score < 15) {
-            anmSpeed = 13;
-            speed = -260;
-            grassSpeed = 4.35;
-        } else if (score >= 15 && score < 20) {
-            anmSpeed = 15;
-            speed = -290;
-            grassSpeed = 4.85;
-            cityBackSpeed = 0.02;
-            cityMidSpeed = 0.03;
-            cityFrontSpeed = 0.04;
-        } else if (score >= 20 && score < 25) {
-            anmSpeed = 17;
-            speed = -320;
-            grassSpeed = 5.32;
-        } else if (score >= 25 && score < 30) {
-            anmSpeed = 18;
-            speed = -370;
-            grassSpeed = 6.2; 
-        } else if (score >= 30 && score < 35) {
-            anmSpeed = 18;
-            speed = -400;
-            grassSpeed = 6.7;
-            cityBackSpeed = 0.025;
-            cityMidSpeed = 0.035;
-            cityFrontSpeed = 0.045;
+    raiseDifficulty: function() {   // !
+            if(score >= 0 && score < 10) {
+                anmSpeed = 11;
+                speed = -225;
+                grassSpeed = 3.75;
+            } else if(score >= 10 && score < 15) {
+                anmSpeed = 13;
+                speed = -260;
+                grassSpeed = 4.35;
+            } else if (score >= 15 && score < 20) {
+                anmSpeed = 15;
+                speed = -290;
+                grassSpeed = 4.85;
+                cityBackSpeed = 0.02;
+                cityMidSpeed = 0.03;
+                cityFrontSpeed = 0.04;
+            } else if (score >= 20 && score < 25) {
+                anmSpeed = 17;
+                speed = -320;
+                grassSpeed = 5.32;
+            } else if (score >= 25 && score < 30) {
+                anmSpeed = 18;
+                speed = -370;
+                grassSpeed = 6.2; 
+            } else if (score >= 30 && score < 35) {
+                anmSpeed = 18;
+                speed = -400;
+                grassSpeed = 6.7;
+                cityBackSpeed = 0.025;
+                cityMidSpeed = 0.035;
+                cityFrontSpeed = 0.045;
         }
     },
     gameOver: function() {
@@ -366,21 +439,35 @@ Game.MainState.prototype = {
           player.animations.stop();
           player.kill();
           speed = 0;
-          grass.tilePosition.x = 0;
+          grassSpeed = 0;
+          //grass.tilePosition.x = 0;   // this was ON I think not needed uses gS
           cityBackSpeed = 0;
           cityMidSpeed = 0;
           cityFrontSpeed = 0;
           black.alpha = 0.5;
           
           obstacles.forEach(function(o){
+              console.log(obstacles.length);
+              console.log('kill obstacles');    // still runs after game over
               o.kill();
           }, this);
           items.forEach(function(d){
+              console.log(items.length);
+              console.log('kill items');      // still runs after game over
               d.kill();
            }, this);
            stageMusic.stop();
            this._showScoreScreen();
-        }  
+
+          if (gameOverCounter === 0) {
+             gameOver = true;
+             inputVisible = true;
+             
+          }
+          gameOverCounter++;
+          console.log('game over running');
+         // universalTimer.destroy(); // this should do the trick NOPE!
+        }
     },
     _showScoreScreen: function() {
         if (rectangle.alpha != 1 && scoreTextInRect.alpha != 1 && topScoreTextInRect.alpha != 1 && playAgainText.alpha != 1) {
@@ -388,11 +475,17 @@ Game.MainState.prototype = {
             topScoreTextInRect.alpha = 1;
             scoreTextInRect.alpha = 1;
             playAgainText.alpha = 1;
+            mainMenuText.alpha = 1;
             
             playAgainText.inputEnabled = true;
+            mainMenuText.inputEnabled = true;
             playAgainText.events.onInputDown.add(function(){
                 this._setDefaults();
                 game.state.start(game.state.current);
+            }, this);
+            mainMenuText.events.onInputDown.add(function(){
+                this._setDefaults();
+                game.state.start('MainMenu');
             }, this);
             
             localStorage.setItem("HighScore",Math.max(score, topScore));
@@ -401,10 +494,14 @@ Game.MainState.prototype = {
                 } else {
                     topScoreTextInRect.text = 'top score: ' + topScore;
                 }
+            
+            
+            /*
             space.onDown.add(function(){
                 this._setDefaults();
                 game.state.start(game.state.current);
             }, this);
+            */
             
         }
     },
@@ -423,5 +520,31 @@ Game.MainState.prototype = {
         universalTimer.destroy();
         universalTimer = game.time.create(false);
         playAgainText.inputEnabled = false;
+        gameOverCounter = 0;
+        gameOver = false;
+        inputVisible = false;
+       // console.log('inputVisible: ' +inputVisible)
+    },
+    _ActiveText: function(txt) {
+        //txt.stroke = "#FFF";
+        //txt.strokeThickness = 5;
+        txt.setShadow(0, 3, "#333333", 2, true, false);
+    },
+    _DeActiveText: function(txt) {
+       // txt.stroke = '#FFF';
+       // txt.strokeThickness = 5;
+        txt.setShadow();
+    },
+    CheckOption: function() {
+        if (playAgainText.input.pointerOver()) {
+                this._ActiveText(playAgainText);
+            } else {
+                this._DeActiveText(playAgainText);
+            }
+            if (mainMenuText.input.pointerOver()) {
+                this._ActiveText(mainMenuText);
+            } else {
+                this._DeActiveText(mainMenuText);
+            }
     }
 };

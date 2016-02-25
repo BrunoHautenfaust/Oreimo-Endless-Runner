@@ -2,17 +2,31 @@
 <html>
 <head>
 <link rel="icon" type="image/png" href="assets/textures/icon.png"/>
-    <script type="text/javascript" src="src/phaser.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Libs -->
+    <script src="src/libs/firebase.js"></script>
+    <script src="src/libs/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="src/libs/phaser.min.js"></script>
+    <!-- JS -->
     <script type="text/javascript" src="src/boot.js"></script>
     <script type="text/javascript" src="src/preload.js"></script>
     <script type="text/javascript" src="src/mainMenu.js"></script>
     <script type="text/javascript" src="src/howTo.js"></script>
     <script type="text/javascript" src="src/mainGame.js"></script>
     <script type="text/javascript" src="src/game.js"></script>
-
+    <script src="src/dataBase.js"></script>
+    
 	<title>Oreimo Endless Runner</title>
 </head>
 <body>
-
+    <div id="phaser-game"></div>
+    <div id="input">
+        <p>Name:</p>
+        <input type='text' id='textInput' placeholder='Text'>
+    </div>
+	</br>
+  <div class="myDiv"> Highscore:
+  	<ul class="myUl"></ul>
+  </div>
 </body>
 </html>

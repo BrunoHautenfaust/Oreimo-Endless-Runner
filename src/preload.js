@@ -39,8 +39,10 @@ Game.Preload.prototype = {
         game.load.audio('jump2', 'assets/audio/jump2.wav');
         game.load.audio('stageMusic', 'assets/audio/stageMusic.ogg');
         game.load.audio('itemSound','assets/audio/item.ogg');
+        
+        game.load.image('point','assets/textures/point.jpg');
 	},
   	create: function(){
-		this.game.state.start("MainMenu");
+		this.game.state.start("MainMenu"); // PlayGame MainMenu
 	}
 };
