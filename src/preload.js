@@ -1,6 +1,6 @@
-Game.Preload = function(game) {}
+//Game.Preload = function(game) {};
 
-Game.Preload.prototype = {
+Game.Preload = {
     preload: function(){ 
         var loadingBar = this.add.sprite(game.world.centerX, game.world.centerY, "loading");
         this.load.setPreloadSprite(loadingBar);

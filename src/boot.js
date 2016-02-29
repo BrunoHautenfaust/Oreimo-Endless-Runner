@@ -1,9 +1,10 @@
 Game = {
     music: null
 };
-Game.Boot = function(game) {};
 
-Game.Boot.prototype = {
+//Game.Boot = function(game) {};
+
+Game.Boot = {
     preload: function(){
         game.load.image('loading', 'assets/textures/rectangle.png'); 
 	},

@@ -1,6 +1,6 @@
-Game.HowTo = function(game) { };
+//Game.HowTo = function(game) { };
 
-Game.HowTo.prototype = {
+Game.HowTo = {
     count : 0,
     create: function() { 
         space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);

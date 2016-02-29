@@ -13,10 +13,11 @@ myDataRef.authAnonymously(function(error, authData) {
   }
 }, { remember: "sessionOnly" });
 
+
 $( document ).ready(function() {
     var inputName = $('#input');    // dubbed in mainGame.js
     inputName.hide();
-   
+
     $('#textInput').keypress(function(e) {
     	if(e.keyCode == 13) {
 	        var playerName = $('#textInput').val();

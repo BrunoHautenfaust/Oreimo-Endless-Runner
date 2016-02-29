@@ -1,4 +1,4 @@
-Game.MainState = function(game) {};
+//Game.MainState = function(game) {};
 
 var universalTimer,
     sky,
@@ -35,17 +35,15 @@ var universalTimer,
     itemPlace = [150, 300, 200],
     itemFlag,
     ranItemPlace,
-    isDay = false,
+   // isDay = false,
     tint = 0xffbf99,
     gameOver = false,
     gameOverCounter = 0;
 
-Game.MainState.prototype = {
-  
+Game.MainState = {
+   
 	create() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
-       
-       
        
         sky = game.make.sprite(0,0, 'sky');
         cityBack = game.make.sprite(0,0, 'cityBack');
@@ -70,12 +68,6 @@ Game.MainState.prototype = {
         filter.scale.setTo(game.width, game.height);
         filter.alpha = 0.15;
         
-        // plane
-        /*
-        a = 1;
-        point = game.make.sprite(0, 0, 'point');
-        texture = game.add.renderTexture(512, 400, 'planetrail');
-        */
         //graphics.beginFill(0xFFFFFF, 1);
         //graphics.drawCircle(-5, -5, 2); // draws a circle in the given coordinates
         //game.add.sprite(-10, 150, texture); // starts the trailing from the given coordinates
@@ -167,6 +159,8 @@ Game.MainState.prototype = {
             grass.tint = tint;
             player.tint = tint;
             filter.tint = 0xfdafe0;
+             
+            this.SunsetGradient();
             /*
             sun = game.add.sprite(game.width - 40, game.height - 160,'sun');
             sun.scale.setTo(0.4,0.4);
@@ -178,6 +172,12 @@ Game.MainState.prototype = {
             sun.anchor.setTo(0.5, 0.5);
         }
         
+         // plane
+        /*
+        a = 1;
+        point = game.make.sprite(0, 0, 'point');
+        texture = game.add.renderTexture(100, 100, 'planetrail');
+        */
         
         universalTimer = game.time.create(false);
         universalTimer.start();
@@ -204,7 +204,8 @@ Game.MainState.prototype = {
 	update() {
        var inputName = $('#input');
         ShowHideInput(inputName);
-       // texture.renderXY(point, a+=0.05, 0);
+        
+       // texture.renderXY(point, a+=1, 0);
         
         if (!gameOver) {
             this.checkIfPlayerOnTop();
@@ -546,5 +547,38 @@ Game.MainState.prototype = {
             } else {
                 this._DeActiveText(mainMenuText);
             }
+    },
+    SunsetGradient: function() {
+        var bmd = game.add.bitmapData(512, 400);
+    bmd.addToWorld();
+
+    var x1 = 500;
+    var a1 = 10;
+    
+    for (var i = 0; i < 10; i++)
+    {
+        var c = Phaser.Color.interpolateColor(0xff863d, 0xffc58f, 10, i, a1);
+
+        bmd.rect(x1, 0, 100, 400, Phaser.Color.getWebRGB(c));
+      //  bmd.blendColorDodge();
+        
+        x1 += 2;
+        a1 += 4;
+    }
+    
+    // 222222222
+    var x2 = 480;
+    var a2 = 8;
+    
+    for (var j = 0; j < 20; j++)
+    {
+        var c = Phaser.Color.interpolateColor(0xe953c6, 0xf35e7f, 20, j, a2);
+        bmd.rect(x2, 0, 100, 400, Phaser.Color.getWebRGB(c));
+       // bmd.blendSoftLight();
+        // bmd.blendColorDodge();
+        x2 += 4;
+        //a2 += 2;
+    }
+        
     }
 };
