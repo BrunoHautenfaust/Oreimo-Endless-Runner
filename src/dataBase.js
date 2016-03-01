@@ -3,6 +3,7 @@ var myDataRef = new Firebase('https://oreimo-runner.firebaseio.com/');
 var highscoreRef = myDataRef.child("highscore");
 var arr = [];
 var inputVisible = false;
+var highscore = 0;
 
 // Authentification
 myDataRef.authAnonymously(function(error, authData) {
@@ -72,11 +73,6 @@ $( document ).ready(function() {
 SortResultsAndShow();
 
 
-
-
-
-
-
 // ====== Functions:
 
 function SortResultsAndShow() {
@@ -88,7 +84,17 @@ highscoreRef.orderByValue().once('value').then(function(snapshot) {
 	});
 	arr.reverse();
 	// arr.forEach(function(element) {console.log(element.playerName +' '+element.score)});
-
+   
+    // PROMISE
+    var topScorePromise = new Promise(function(){
+	//setTimeout(function(){alert('crap');}, 1000);
+        topScore = arr[0].score;
+       // console.log(topScore);
+        }, function(error){
+            console.log(error);
+        alert(error);
+    });
+    
 	var ul = $('.myUl');
 	$.each(arr, function(i) {
 		
@@ -124,3 +130,4 @@ function ShowHideInput(el) {
        el.hide(); 
     }
 }
+

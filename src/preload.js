@@ -44,5 +44,5 @@ Game.Preload = {
 	},
   	create: function(){
 		this.game.state.start("MainMenu"); // PlayGame MainMenu
-	}
+    }
 };

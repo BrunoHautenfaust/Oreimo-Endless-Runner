@@ -1,5 +1,6 @@
 //Game.MainState = function(game) {};
 
+
 var universalTimer,
     sky,
     rdg,
@@ -25,7 +26,7 @@ var universalTimer,
     timeCheck = 0,
     passText,
     scoreText,
-    topScore = 0,
+   // topScore = highscore,
     score = 0,
     playerInPosition = false,
     numArr = [700, 1200, 2000],
@@ -103,10 +104,11 @@ Game.MainState = {
         pointer = game.input.activePointer;
         game.input.enabled = false;
 
+        /*
         topScore = localStorage.getItem("HighScore") == null ? 0 : localStorage.getItem("HighScore");
-
-        var style = { font: "Bold 28px Arial", fill: "#FFF"};
-        scoreText = game.add.text(10, 35, 'score: 0', style);
+        */
+        var style = { font: "Bold 24px Arial", fill: "#FFF"};
+        scoreText = game.add.text(10, 35, 'your score: 0', style);
         topScoreText = game.add.text(10, 5, 'top score: ' + topScore, style);
         
         black = game.add.sprite(0,0, 'black');
@@ -373,7 +375,7 @@ Game.MainState = {
         if (i.itemFlag == true) {
             itemSound.play();
             score += 1;      
-            scoreText.text = 'score: ' + score;
+            scoreText.text = 'your score: ' + score;
             scoreTextInRect.text =  scoreText.text;
         }
         i.itemFlag = false;
@@ -489,13 +491,21 @@ Game.MainState = {
                 game.state.start('MainMenu');
             }, this);
             
-            localStorage.setItem("HighScore",Math.max(score, topScore));
             if (score > topScore) {
                 topScoreTextInRect.text = 'top score: ' + score;
                 } else {
                     topScoreTextInRect.text = 'top score: ' + topScore;
                 }
             
+            /*
+            localStorage.setItem("HighScore",Math.max(score, topScore));
+            
+            if (score > topScore) {
+                topScoreTextInRect.text = 'top score: ' + score;
+                } else {
+                    topScoreTextInRect.text = 'top score: ' + topScore;
+                }
+            */
             
             /*
             space.onDown.add(function(){
