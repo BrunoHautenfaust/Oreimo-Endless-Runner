@@ -41,6 +41,7 @@ Game.Preload = {
         game.load.audio('itemSound','assets/audio/item.ogg');
         
         game.load.image('point','assets/textures/point.jpg');
+        game.load.spritesheet('sparkle','assets/textures/sparkle.png', 60, 62);
 	},
   	create: function(){
 		this.game.state.start("MainMenu"); // PlayGame MainMenu

@@ -46,6 +46,11 @@ Game.MainState = {
 	create() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
        
+        // new
+       // var effect = game.make.sprite(0, 0, 'sparkle');
+        
+         
+        
         sky = game.make.sprite(0,0, 'sky');
         cityBack = game.make.sprite(0,0, 'cityBack');
         cityMid = game.make.sprite(0,0, 'cityMid');
@@ -84,7 +89,7 @@ Game.MainState = {
         
         item.scale.setTo(20,20);
         items = game.add.group();
-        items.createMultiple(10, 'item');
+        items.createMultiple(10, 'item'); // 8  10  20
 
         itemSound = game.add.audio('itemSound');
          
@@ -234,7 +239,7 @@ Game.MainState = {
             this.gameOver();
         } else {
             this.CheckOption();
-            console.log('checking option');
+          //  console.log('checking option');
         }
         
 	},
@@ -242,7 +247,7 @@ Game.MainState = {
         //game.debug.body(player);
     },
     updateSpeedForAliveElements: function() {   // !
-            console.log('updateSpeedForAliveElements running');
+     //       console.log('updateSpeedForAliveElements running');
           obstacles.forEachAlive(function(o){
                 o.body.velocity.x = speed;
             }, this);
@@ -332,7 +337,7 @@ Game.MainState = {
         }
     },
     addObstacle: function() {   // ! but maybe fix the pause timer thing
-            console.log('adding obs');
+          //  console.log('adding obs');
             var obs = obstacles.getFirstDead();
             if (obs) {
                 if (!isDay) {
@@ -350,7 +355,7 @@ Game.MainState = {
     },
     addItem: function() {   // ! but maybe fix the pause timer thing
         if (!gameOver) {
-            console.log('adding itm');
+           // console.log('adding itm');
             var itm = items.getFirstDead(); 
 
             game.physics.arcade.enable(itm);
@@ -365,14 +370,47 @@ Game.MainState = {
              }
             itm.checkWorldBounds = true;
             itm.outOfBoundsKill = true;
+            console.log(itm.outOfBoundsKill +' killed');
         }
     },
     itemTaken: function() {
         game.physics.arcade.overlap(player, items, this._updateScore, null, this);
-    },
+        
+       /* game.physics.arcade.overlap(player, items, this._updateScore, function(p, i){
+            i.loadTexture('sparkle', 0);
+            i.animations.add('glow');
+            i.animations.play('glow', 30, true);
+        }, this);
+        */
+        
+    },  // WORK IT
     _updateScore: function(p, i) {
-        i.kill();
+        
+      //  i.kill();
+      /* i.animations.add('glow');
+         i.animations.play('glow', 40, false).onComplete.add(function() {
+            console.log('complete');
+            i.kill();
+            i.loadTexture('item');
+            }, this);
+*/
         if (i.itemFlag == true) {
+            i.loadTexture('sparkle', 0);  // turns many children into sparkle
+        i.animations.add('glow');
+        i.animations.play('glow', 30, false).onComplete.add(function() {
+            console.log('complete');
+            i.kill();
+            i.loadTexture('item');
+            }, this); 
+            /*
+            var eff = game.add.sprite(i.x, i.y, 'sparkle');
+            eff.animations.add('glow');
+            eff.animations.play('glow', 100, false).onComplete.add(function() {
+                eff.destroy();
+            }, this);
+            eff.x -= 50;
+            */
+            
             itemSound.play();
             score += 1;      
             scoreText.text = 'your score: ' + score;
@@ -386,7 +424,7 @@ Game.MainState = {
         bounce.yoyo(true);
     },
     checkObstacleItemOverlap: function() {
-        console.log('checking overlap');
+       // console.log('checking overlap');
         game.physics.arcade.overlap(obstacles, items, function(o, i){
             i.kill();
         }, null, this);
