@@ -17,9 +17,9 @@ var universalTimer,
     playerControl = false,
     flag = 0,
     pass = 0,
-    anmSpeed,
-    speed,
-    grassSpeed = 0,
+    anmSpeed = 11,
+    speed = -200,
+    grassSpeed = 3.34,  // old value: 3.32
     cityBackSpeed = 0.015,
     cityMidSpeed = 0.020,
     cityFrontSpeed = 0.030,
@@ -231,7 +231,7 @@ Game.MainState = {
 
             this.startObstacleAndItemTimer();
             this.updateSpeedForAliveElements();
-            this.raiseDifficulty();
+          //  this.raiseDifficulty();
 
             this.checkObstacleItemOverlap();
             this.itemTaken();
@@ -370,7 +370,6 @@ Game.MainState = {
              }
             itm.checkWorldBounds = true;
             itm.outOfBoundsKill = true;
-            console.log(itm.outOfBoundsKill +' killed');
         }
     },
     itemTaken: function() {
@@ -385,7 +384,6 @@ Game.MainState = {
         
     },  // WORK IT
     _updateScore: function(p, i) {
-        
       //  i.kill();
       /* i.animations.add('glow');
          i.animations.play('glow', 40, false).onComplete.add(function() {
@@ -398,7 +396,6 @@ Game.MainState = {
             i.loadTexture('sparkle', 0);  // turns many children into sparkle
         i.animations.add('glow');
         i.animations.play('glow', 30, false).onComplete.add(function() {
-            console.log('complete');
             i.kill();
             i.loadTexture('item');
             }, this); 
@@ -413,8 +410,10 @@ Game.MainState = {
             
             itemSound.play();
             score += 1;      
+            
             scoreText.text = 'your score: ' + score;
             scoreTextInRect.text =  scoreText.text;
+            this.raiseDifficulty();
         }
         i.itemFlag = false;
     },
@@ -443,7 +442,15 @@ Game.MainState = {
         }
     },
     raiseDifficulty: function() {   // !
-            if(score >= 0 && score < 10) {
+        // seems stable:
+        if (anmSpeed <= 20) {
+            anmSpeed += 0.2;
+        }
+            speed -= 5;
+            grassSpeed += 0.085;     // 0.08 at one point seems a bit slow
+                                     // 0.09 a bit too fast
+        
+        /*    if(score >= 0 && score < 10) {
                 anmSpeed = 11;
                 speed = -225;
                 grassSpeed = 3.75;
@@ -473,7 +480,7 @@ Game.MainState = {
                 cityBackSpeed = 0.025;
                 cityMidSpeed = 0.035;
                 cityFrontSpeed = 0.045;
-        }
+        }*/
     },
     gameOver: function() {
       if (playerInPosition && (player.x < -110 || game.physics.arcade.overlap(player, obstacles)) ) {
