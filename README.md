@@ -22,6 +22,7 @@
 (This game wouldn't have had the right feeling to it without them)
 - Kirino sprites: http://www.justnopoint.com/lbends/
 - Background sprites: Waku Waku 7 game
-- Various other sprites: http://opengameart.org/content/2d-platformersidescroller-tiles
+- Various other sprites: [opengameart.org](http://opengameart.org/content/2d-platformersidescroller-tiles), [spriters-resource.com]
+(http://www.spriters-resource.com/pc_computer/captainclaw/)
 - Voice SFX: http://mugenguild.com/forum/
-- Music - Oreimo Soundtrack: 16 - Suberi-komi no saifu!
+- Music: Oreimo Soundtrack - Suberi-komi no saifu!
