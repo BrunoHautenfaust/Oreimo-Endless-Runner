@@ -18,9 +18,15 @@ myDataRef.authAnonymously(function(error, authData) {
 $( document ).ready(function() {
     var inputName = $('#input');    // dubbed in mainGame.js
     inputName.hide();
-
+    
+    var submitButton = $('button');
+    submitButton.click(function(){
+        SubmitLogic();
+    });
+    
     $('#textInput').keypress(function(e) {
     	if(e.keyCode == 13) {
+            /*
 	        var playerName = $('#textInput').val();
 	        
             var playerExists = null;
@@ -32,27 +38,26 @@ $( document ).ready(function() {
 		  		console.log(dbScore);
 
 
-		  		if (playerExists) {
-                    // if score <= new score, do nothing
-				if (score <= dbScore) {
-					console.log('score <= dbScore');
-				} else {
-                    // if score > new score, update
-					var playerRef = highscoreRef.child(playerName);
-	      			playerRef.set(score);
-	      			console.log('new score set');
-				}
+        if (playerExists) {
+            // if score <= new score, do nothing
+			if (score <= dbScore) {
+				console.log('score <= dbScore');
 			} else {
-                // new player and score
+                // if score > new score, update
 				var playerRef = highscoreRef.child(playerName);
 	      		playerRef.set(score);
-	      		console.log('new player AND new score set');
-			}
-			Refresh();
-			SortResultsAndShow();
-
+	      		console.log('new score set');
+            }
+        } else {
+            // new player and score
+		    var playerRef = highscoreRef.child(playerName);
+	      	playerRef.set(score);
+	      	console.log('new player AND new score set');
+        }
+		Refresh();
+		SortResultsAndShow();
 			});
-            inputVisible = false;
+        inputVisible = false;
             /*
 	        var playerRef = highscoreRef.child(playerName);
 	        playerRef.set(score);
@@ -61,6 +66,7 @@ $( document ).ready(function() {
             inputVisible = false;
             */
 	    // arr.push() and then with binary search maybe put where it should be and reload array
+            SubmitLogic();
     	}
         
 	});
@@ -74,6 +80,40 @@ SortResultsAndShow();
 
 
 // ====== Functions:
+
+function SubmitLogic() {
+        var playerName = $('#textInput').val();
+	        
+            var playerExists = null;
+	        var dbScore = null;
+			highscoreRef.once('value', function(dataSnapshot) {
+				playerExists = dataSnapshot.child(playerName).exists();
+		  		console.log(playerExists);
+		  		dbScore = dataSnapshot.child(playerName).val();
+		  		console.log(dbScore);
+
+
+        if (playerExists) {
+            // if score <= new score, do nothing
+			if (score <= dbScore) {
+				console.log('score <= dbScore');
+			} else {
+                // if score > new score, update
+				var playerRef = highscoreRef.child(playerName);
+	      		playerRef.set(score);
+	      		console.log('new score set');
+            }
+        } else {
+            // new player and score
+		    var playerRef = highscoreRef.child(playerName);
+	      	playerRef.set(score);
+	      	console.log('new player AND new score set');
+        }
+		Refresh();
+		SortResultsAndShow();
+			});
+        inputVisible = false;
+}
 
 function SortResultsAndShow() {
 highscoreRef.orderByValue().once('value').then(function(snapshot) {
