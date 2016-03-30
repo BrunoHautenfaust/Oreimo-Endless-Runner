@@ -9,6 +9,8 @@ Game.MainMenu = {
         space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         up = game.input.keyboard.addKey(Phaser.Keyboard.UP);
         down = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+        left  = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+        right  = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         
         dot = game.add.tileSprite(0, 0, game.width, game.height, 'dot');
         title = this.add.sprite(game.width/2, 105, 'title');
@@ -67,6 +69,17 @@ Game.MainMenu = {
             }
         }, this);
         
+        left.onDown.add(function(){
+            isDay = true;
+            afternoon.visible = true;
+            sunset.visible = false;
+        }, this);
+        
+        right.onDown.add(function(){
+            isDay = false;
+            afternoon.visible = false;
+            sunset.visible = true;
+        }, this);
               
         down.onDown.add(this._instructionsTextActive, this); 
         up.onDown.add(this._playTextActive, this);
