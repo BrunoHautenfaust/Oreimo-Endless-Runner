@@ -210,7 +210,7 @@ Game.MainState = {
    
 	update() {
        var inputName = $('#input');
-        ShowHideInput(inputName);
+       ShowHideInput(inputName);
         
        // texture.renderXY(point, a+=1, 0);
         
@@ -510,7 +510,6 @@ Game.MainState = {
           if (gameOverCounter === 0) {
              gameOver = true;
              inputVisible = true;
-             
           }
           gameOverCounter++;
           console.log('game over running');
@@ -578,8 +577,7 @@ Game.MainState = {
         playAgainText.inputEnabled = false;
         gameOverCounter = 0;
         gameOver = false;
-        inputVisible = false;
-       // console.log('inputVisible: ' +inputVisible)
+        inputVisible = false;   // doesn't work. Too fast, I guess?
     },
     _ActiveText: function(txt) {
         //txt.stroke = "#FFF";

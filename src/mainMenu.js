@@ -111,6 +111,10 @@ Game.MainMenu = {
        
     }, 
     update: function() { 
+        var inputName = $('#input');
+        // Note that it isn't always necessary to test whether an element exists. The following code will show the element if it exists, and do nothing (with no errors) if it does not:
+        inputName.hide();
+        
         count = 5;
         dot.tilePosition.y -= Math.cos(count);
         dot.tilePosition.x -= Math.cos(count);
