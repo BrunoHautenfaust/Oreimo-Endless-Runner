@@ -12,8 +12,40 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 }
 
-.myDiv {
+#backgroundWrapper {
+   position: absolute;
+   z-index: -1;
+}
+
+#kirino {
+    content: url(../assets/textures/kirino.png);
+    width: 300px;
+    margin-right: 300px;
+}
+
+@media (max-width: 1100px) {
+  #kirino {
+    display: none;
+  }
+    #kirino2 {
+    margin-top: 600px;
+  }
     
+    #backgroundWrapper {
+   z-index: -1;
+    }
+    
+    html {
+    height: 160%;
+    }
+}
+
+#kirino2 {
+    content: url(../assets/textures/kirino2.png);
+    width: 650px;
+}
+
+.myDiv {
         display: table;
         margin: auto;
         border: 2px solid #009f3c;
