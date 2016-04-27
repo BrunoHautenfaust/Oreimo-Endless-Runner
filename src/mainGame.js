@@ -49,8 +49,6 @@ Game.MainState = {
         // new
        // var effect = game.make.sprite(0, 0, 'sparkle');
         
-         
-        
         sky = game.make.sprite(0,0, 'sky');
         cityBack = game.make.sprite(0,0, 'cityBack');
         cityMid = game.make.sprite(0,0, 'cityMid');
@@ -144,12 +142,16 @@ Game.MainState = {
         playAgainText = game.add.text(game.world.centerX - rectangle.width/2 + 32, game.world.centerY - rectangle.height/2 + 60, 'Play again', {fill: '#093', stroke: '#FFF', strokeThickness: 5});
        
         mainMenuText = game.add.text(game.world.centerX - rectangle.width/2 + 30, game.world.centerY - rectangle.height/2 + 100, 'Main Menu', {fill: '#093', stroke: '#FFF', strokeThickness: 5});
-
+        
+        pauseText = game.add.text(game.world.centerX, game.world.centerY, 'Pause', {fill: '#093', stroke: '#FFF', strokeThickness: 5});
+        pauseText.anchor.setTo(0.5, 0.5);
+        
         rectangle.alpha = 0;
         topScoreTextInRect.alpha = 0;
         scoreTextInRect.alpha = 0;
         playAgainText.alpha = 0;
         mainMenuText.alpha = 0;
+        pauseText.alpha = 0;
         
        var cloudTint = 0xa998a0;
           // new
@@ -188,12 +190,13 @@ Game.MainState = {
         
         universalTimer = game.time.create(false);
         universalTimer.start();
-        
+        /*
         game.onBlur.add(function(){
             universalTimer.pause();
             game.paused = true;
             game.sound.pauseAll();
             black.alpha = 0.5;
+            pauseText.alpha = 1;
         }, this);
         
         game.onFocus.add(function(){
@@ -202,10 +205,31 @@ Game.MainState = {
             game.paused = false;
             game.sound.resumeAll();
             black.alpha = 0;
+            pauseText.alpha = 0;
            //     }
         }, this);
+        */
+        enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        enter.onDown.add(function(){
+            if (player.alive) {
+                 if (!game.paused) {
+                    game.paused = true;
+                    pauseText.alpha = 1;
+                    game.sound.pauseAll();
+                    black.alpha = 0.5;
+                    scoreText.alpha = 0;
+                    topScoreText.alpha = 0;              
+                } else {
+                    game.paused = false;
+                    pauseText.alpha = 0;
+                    game.sound.resumeAll();
+                    black.alpha = 0;
+                    scoreText.alpha = 1;
+                    topScoreText.alpha = 1;
+                }
+            }
+        }, this);
         
-      
     },
    
 	update() {
@@ -517,6 +541,11 @@ Game.MainState = {
         }
     },
     _showScoreScreen: function() {
+        if (player.alive) {
+            playAgainText.text = '   Resume';
+            
+        }
+        
         if (rectangle.alpha != 1 && scoreTextInRect.alpha != 1 && topScoreTextInRect.alpha != 1 && playAgainText.alpha != 1) {
             rectangle.alpha = 1;
             topScoreTextInRect.alpha = 1;
@@ -590,6 +619,7 @@ Game.MainState = {
         txt.setShadow();
     },
     CheckOption: function() {
+        
         if (playAgainText.input.pointerOver()) {
                 this._ActiveText(playAgainText);
             } else {
