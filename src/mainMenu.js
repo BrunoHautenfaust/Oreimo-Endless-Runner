@@ -1,5 +1,3 @@
-// Game.MainMenu = function(game) {};
-
 Game.MainMenu = {
     count : 0,
     create: function() { 
@@ -9,13 +7,13 @@ Game.MainMenu = {
         space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         up = game.input.keyboard.addKey(Phaser.Keyboard.UP);
         down = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-        left  = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-        right  = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+        left = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+        right = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         
         dot = game.add.tileSprite(0, 0, game.width, game.height, 'dot');
         title = this.add.sprite(game.width/2, 105, 'title');
-            title.anchor.setTo(0.5, 0.5);
-            title.scale.setTo(1, 0.9);
+        title.anchor.setTo(0.5, 0.5);
+        title.scale.setTo(1, 0.9);
         activeFill = "#093";
         deactiveFill = "#000";
 
@@ -112,21 +110,13 @@ Game.MainMenu = {
     }, 
     update: function() { 
         var inputName = $('#input');
-        // Note that it isn't always necessary to test whether an element exists. The following code will show the element if it exists, and do nothing (with no errors) if it does not:
         inputName.hide();
-        
         count = 5;
         dot.tilePosition.y -= Math.cos(count);
         dot.tilePosition.x -= Math.cos(count);
         
         // pointer
         this.PointerOverOptions(playText, instructionsText);
-        /*
-        if (playText.input.pointerOver()) {
-            this.playTextActive();
-        } else if (instructionsText.input.pointerOver()) {
-            this.instructionsTextActive();
-        }*/
         // space
         if (space.isDown && playText.fill == activeFill) {
             Game.music.fadeOut(400);
@@ -134,7 +124,6 @@ Game.MainMenu = {
             } else if (space.isDown && instructionsText.fill == activeFill) {
                 game.state.start('HowTo');
             }
-        
     },
     _playTextActive() {
         playText.fill = activeFill;

@@ -1,5 +1,3 @@
-//Game.HowTo = function(game) { };
-
 Game.HowTo = {
     count : 0,
     create: function() { 

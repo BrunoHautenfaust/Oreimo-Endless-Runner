@@ -1,4 +1,3 @@
-// var myDataRef = new Firebase('https://s1eupheaues.firebaseio-demo.com/');
 var myDataRef = new Firebase('https://oreimo-runner.firebaseio.com/');
 var highscoreRef = myDataRef.child("highscore");
 var arr = [];
@@ -26,58 +25,13 @@ $( document ).ready(function() {
     
     $('#textInput').keypress(function(e) {
     	if(e.keyCode == 13) {
-            /*
-	        var playerName = $('#textInput').val();
-	        
-            var playerExists = null;
-	        var dbScore = null;
-			highscoreRef.once('value', function(dataSnapshot) {
-				playerExists = dataSnapshot.child(playerName).exists();
-		  		console.log(playerExists);
-		  		dbScore = dataSnapshot.child(playerName).val();
-		  		console.log(dbScore);
-
-
-        if (playerExists) {
-            // if score <= new score, do nothing
-			if (score <= dbScore) {
-				console.log('score <= dbScore');
-			} else {
-                // if score > new score, update
-				var playerRef = highscoreRef.child(playerName);
-	      		playerRef.set(score);
-	      		console.log('new score set');
-            }
-        } else {
-            // new player and score
-		    var playerRef = highscoreRef.child(playerName);
-	      	playerRef.set(score);
-	      	console.log('new player AND new score set');
-        }
-		Refresh();
-		SortResultsAndShow();
-			});
-        inputVisible = false;
-            /*
-	        var playerRef = highscoreRef.child(playerName);
-	        playerRef.set(score);
-			Refresh();
-			SortResultsAndShow();
-            inputVisible = false;
-            */
-	    // arr.push() and then with binary search maybe put where it should be and reload array
             SubmitLogic();
     	}
-        
 	});
 
-
-   // ShowHideInput(inputName);
-    
 });
 
 SortResultsAndShow();
-
 
 // ====== Functions:
 
@@ -120,16 +74,12 @@ highscoreRef.orderByValue().once('value').then(function(snapshot) {
   // The Promise was "fulfilled" (it succeeded).
   	snapshot.forEach(function(data) {
   		arr.push({playerName: data.key(), score: data.val()});
-  		// console.log(data.key() +' '+data.val());
 	});
 	arr.reverse();
-	// arr.forEach(function(element) {console.log(element.playerName +' '+element.score)});
-   
+
     // PROMISE
     var topScorePromise = new Promise(function(){
-	//setTimeout(function(){alert('crap');}, 1000);
         topScore = arr[0].score;
-       // console.log(topScore);
         }, function(error){
             console.log(error);
         alert(error);
@@ -170,4 +120,3 @@ function ShowHideInput(el) {
        el.hide(); 
     }
 }
-

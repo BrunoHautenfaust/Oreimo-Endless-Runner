@@ -1,5 +1,3 @@
-//Game.Preload = function(game) {};
-
 Game.Preload = {
     preload: function(){ 
         var loadingBar = this.add.sprite(game.world.centerX, game.world.centerY, "loading");
@@ -44,6 +42,6 @@ Game.Preload = {
         game.load.spritesheet('sparkle','assets/textures/sparkle.png', 60, 62);
 	},
   	create: function(){
-		this.game.state.start("MainMenu"); // PlayGame MainMenu
+		this.game.state.start("MainMenu");
     }
 };
