@@ -231,11 +231,11 @@ Game.MainState = {
 
                  if (universalTimer.ms > obstacleTime) {
                     obstacleTime = universalTimer.ms + ranNum + 100;
-                    this.addObstacle();
+                    this._addObstacle();
                  }
                  if (universalTimer.ms > itemTimer) {
                     itemTimer = universalTimer.ms + ranNum;
-                    universalTimer.loop(itemTimer, this.addItem, this);
+                    universalTimer.loop(itemTimer, this._addItem, this);
                  }
              }
     },
@@ -302,7 +302,7 @@ Game.MainState = {
             flag = 0;
         }
     },
-    addObstacle: function() { 
+    _addObstacle: function() { 
             var obs = obstacles.getFirstDead();
             if (obs) {
                 if (!isDay) {
@@ -318,7 +318,7 @@ Game.MainState = {
              obs.checkWorldBounds = true;
              obs.outOfBoundsKill = true;
     },
-    addItem: function() { 
+    _addItem: function() { 
         if (!gameOver) {
             var itm = items.getFirstDead(); 
 
@@ -330,7 +330,7 @@ Game.MainState = {
                 itm.reset(game.world.width, ranItemPlace);
                 itm.body.velocity.x = speed;
                 itm.itemFlag = true;
-                this.addBounceEffect(itm);
+                this._addBounceEffect(itm);
              }
             itm.checkWorldBounds = true;
             itm.outOfBoundsKill = true;
@@ -357,7 +357,7 @@ Game.MainState = {
         }
         i.itemFlag = false;
     },
-    addBounceEffect: function(i) {
+    _addBounceEffect: function(i) {
         var bounce = game.add.tween(i);
         bounce.to( { y: i.y + 8 }, 260, 'Linear', true, 0, -1);
         bounce.yoyo(true);

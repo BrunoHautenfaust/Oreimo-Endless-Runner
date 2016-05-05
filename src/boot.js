@@ -8,7 +8,7 @@ Game.Boot = {
 	},
   	create: function(){
         game.stage.backgroundColor = '#FEF9B9';
-		this.scale.pageAlignHorizontally = true;
+		game.scale.pageAlignHorizontally = true;
 		this.game.state.start("Preload");
 	}
 };

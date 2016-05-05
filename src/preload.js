@@ -1,21 +1,21 @@
 Game.Preload = {
     preload: function(){ 
         var loadingBar = this.add.sprite(game.world.centerX, game.world.centerY, "loading");
-        this.load.setPreloadSprite(loadingBar);
+        game.load.setPreloadSprite(loadingBar);
         loadingBar.anchor.setTo(0.5,0.5);
         loadingBar.scale.setTo(1,0.4);
         
         // Main Menu
-        this.load.image('title', 'assets/textures/title.png');
-        this.load.image('dot', 'assets/textures/dot.png');
-        this.load.audio('menuMusic', 'assets/audio/menuMusic.ogg');
+        game.load.image('title', 'assets/textures/title.png');
+        game.load.image('dot', 'assets/textures/dot.png');
+        game.load.audio('menuMusic', 'assets/audio/menuMusic.ogg');
         
         // How to
-        this.load.image('obstacle', 'assets/textures/crate.png');
-        this.load.image('item', 'assets/textures/item.png');
-        this.load.image('space', 'assets/textures/space.png');
-        this.load.image('mouse', 'assets/textures/mouse.png');
-        this.load.image('tap', 'assets/textures/tap.png');
+        game.load.image('obstacle', 'assets/textures/crate.png');
+        game.load.image('item', 'assets/textures/item.png');
+        game.load.image('space', 'assets/textures/space.png');
+        game.load.image('mouse', 'assets/textures/mouse.png');
+        game.load.image('tap', 'assets/textures/tap.png');
         
         // Main Game
         game.load.image('sky', 'assets/textures/sky.jpg');
