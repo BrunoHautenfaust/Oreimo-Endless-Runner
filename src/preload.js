@@ -8,7 +8,7 @@ Game.Preload = {
         // Main Menu
         game.load.image('title', 'assets/textures/title.png');
         game.load.image('dot', 'assets/textures/dot.png');
-        game.load.audio('menuMusic', 'assets/audio/menuMusic.wav');
+        game.load.audio('menuMusic', ['assets/audio/menuMusic.ogg', 'assets/audio/menuMusic.wav']);
         
         // How to
         game.load.image('obstacle', 'assets/textures/crate.png');
@@ -35,8 +35,8 @@ Game.Preload = {
         game.load.image('rectangle', 'assets/textures/rectangle.png');
         game.load.audio('jump1', 'assets/audio/jump1.wav');
         game.load.audio('jump2', 'assets/audio/jump2.wav');
-        game.load.audio('stageMusic', 'assets/audio/stageMusic.wav');
-        game.load.audio('itemSound','assets/audio/item.wav');
+        game.load.audio('stageMusic', ['assets/audio/stageMusic.ogg', 'assets/audio/stageMusic.wav']);
+        game.load.audio('itemSound', ['assets/audio/item.ogg', 'assets/audio/item.wav']);
         
         game.load.image('point','assets/textures/point.jpg');
         game.load.spritesheet('sparkle','assets/textures/sparkle.png', 60, 62);
