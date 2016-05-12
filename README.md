@@ -12,10 +12,10 @@
 <img src="./screenshots/screen2.jpg" alt="screen2" width="400" height="300">
 
 #### Browser Performance:
-- _Google Chrome 47.0:_ Runs fine!
-- _Mozilla Firefox 42.0:_ Runs a bit laggy.
-- _Opera 33.0:_ Runs fine!
-- _Microsoft Edge:_ No sound. Game doesn't go beyond the main menu. 
+- _Google Chrome 50.0:_ Runs fine!
+- _Mozilla Firefox 46.0:_ Runs fine! No CSS images.
+- _Opera 37.0:_ Runs fine!
+- _Microsoft Edge 13:_ Runs fine! No CSS images.
 - _Internet Explorer 11:_ No sound. Doesn't go beyond the loading screen.
 
 #### Resources:
